@@ -1,4 +1,5 @@
 from fonction import *
+import datetime
 
 historique = []
 print("Bienvenue dans le Calculateur de Trajet Lomé (Zemidjan/Taxi)")
@@ -25,14 +26,25 @@ while True:
             print("[Erreur] La distance doit etre supérieure à 0.")
         except ValueError:
             print("[Erreur] Veuillez entrer une valeur numérique valide.")
-        
-    heureDecimale = None
-    while heureDecimale is None:
-        heureView = input("Enntrez l'heure au format HH:MM (ex: 07:30) : ").strip()
-        heureDecimale = convertirHeureEnDecimal(heureView)
-        if heureDecimale is None:
-            print("[Erreur] Format d'heure invalide. Utilisez le format HH:MM.")
     
+    # 
+    print("\n\tOption Heure :")
+    print("1. Utiliser l'heure actuelle du système")
+    print("2. Entrer l'heure manuellement")
+    heureChoix = input("Entrer votre choix : ").strip()
+    
+    heureDecimale = None
+    if heureChoix == "1":
+        maintenant = datetime.datetime.now()
+        heureDecimale = maintenant.hour + (maintenant.minute / 60.0)
+        print(f"# Heure du système détectée : {maintenant.strftime('%H:%M')}")
+    else:
+        while heureDecimale is None:
+            heureView = input("Enntrez l'heure au format HH:MM (ex: 07:30) : ").strip()
+            heureDecimale = convertirHeureEnDecimal(heureView)
+            if heureDecimale is None:
+                print("[Erreur] Format d'heure invalide. Utilisez le format HH:MM.")
+        
     resultat = calculerPrixTrajet(choix, distance, heureDecimale)
     afficherFacture(resultat)
 
