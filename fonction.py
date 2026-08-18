@@ -2,7 +2,7 @@ from constantes import HEURES_POINTES, TARIFS, FICHIER_HISTORIQUE
 import os
 import json
 
-# 
+# Fonction qui permet de convertir heure en décimale
 def convertirHeureEnDecimal(heureStr):
     try:
         heures, minutes = map(int, heureStr.split(":"))
@@ -13,7 +13,7 @@ def convertirHeureEnDecimal(heureStr):
         return None
 
 
-# 
+# Fonction qui verifie si l'heure est dans la plages des heures de pointes
 def estHeurePointe(heureDecimale):
     for debut, fin in HEURES_POINTES:
         if debut <= heureDecimale <= fin:
@@ -21,12 +21,12 @@ def estHeurePointe(heureDecimale):
     return False
 
 
-# 
+# Arrondir les prix au angle de 25
 def arrondirPrix(montant):
     return round(montant / 25.0) * 25
 
 
-# 
+# Calculer les prix de trajet en fonction des variables
 def calculerPrixTrajet(typeDeplacement, distance, heureDecimale, dateStr):
     info = TARIFS[typeDeplacement]
     
@@ -54,7 +54,7 @@ def calculerPrixTrajet(typeDeplacement, distance, heureDecimale, dateStr):
     }
 
 
-# 
+# Fonction qui prends les données au niveau de calculer trajet pour afficher la facture
 def afficherFacture(resultat):
     heureEntiere = int(resultat["heureDecimale"])
     minuteEntiere = int(round((resultat["heureDecimale"] - heureEntiere) * 60))
@@ -75,6 +75,7 @@ def afficherFacture(resultat):
     print(f"| Prix à payer       :  {int(resultat['prixArrondi'])} FCFA       |")
     print("<"*20 + ">"*20)
 
+# Charger l'historique à chaque fois que l'on revient dans le programme dans un fichier json
 def chargerHistorique(nomFichier = FICHIER_HISTORIQUE):
     if not os.path.exists(nomFichier):
         return []
@@ -86,7 +87,7 @@ def chargerHistorique(nomFichier = FICHIER_HISTORIQUE):
         print(f"Impossible de lire l'historique ({e}).")
         return []
 
-
+# Sauvegarde des historiques dans le fichier json pour la persistence
 def sauvergarderHistorique(historique, nomFichier = FICHIER_HISTORIQUE):
     try:
         with open(nomFichier, "w", encoding="utf-8") as fush:
@@ -94,7 +95,7 @@ def sauvergarderHistorique(historique, nomFichier = FICHIER_HISTORIQUE):
     except IOError as e:
         print(f"Echec de la sauvegarde dans le fichoer json : {e}")
         
-
+# Fonctin qui permet d'afficher nos historiques sauvegarder, restitué
 def afficherHistorique(historique):
     if not historique:
         return

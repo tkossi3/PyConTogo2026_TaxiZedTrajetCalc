@@ -1,9 +1,11 @@
 from fonction import *
 import datetime
 
+# Charger l'historique sauvegarde quant l'on revient
 historique = chargerHistorique()
 print("Bienvenue dans le Calculateur de Trajet Lomé (Zemidjan/Taxi)")
 
+# La boucle principale
 while True:
     print("\n <<< NOUVEAU TRAJET >>>")
     print("1. Zemidjan (Taxi-moto)")
@@ -13,15 +15,21 @@ while True:
     
     choix = input("Choisissez le moyen de transport : ").strip()
     
+    # Quitter le programme
     if choix == "4":
         break
+    
+    # Afficher l'historique
     if choix == "3":
         afficherHistorique(historique)
         continue
+    
+    # Choix suivants dans les tarifs
     if choix not in TARIFS:
         print("[Erreur] Choix invalide. Veuillez saisir 1 ou 2.")
         continue
     
+    # Verifier la saisie de la distance
     while True:
         try:
             distance = float(input("Entrez la distance du trajet en km : "))
@@ -31,12 +39,13 @@ while True:
         except ValueError:
             print("[Erreur] Veuillez entrer une valeur numérique valide.")
     
-    # 
-    print("\n\tOption Heure :")
-    print("1. Utiliser l'heure actuelle du système")
-    print("2. Entrer l'heure manuellement")
+    # Demander le choix de saisie de l'utilisateur
+    print("\n\tOption Date et Heure :")
+    print("1. Utiliser la date et l'heure actuelle du système")
+    print("2. Entrer la date et l'heure manuellement")
     heureChoix = input("Entrer votre choix : ").strip()
     
+    # Initialiaser nos variable à none
     dateStr = None
     heureDecimale = None
     if heureChoix == "1":
@@ -53,16 +62,18 @@ while True:
             heureDecimale = convertirHeureEnDecimal(heureView)
             if heureDecimale is None:
                 print("[Erreur] Format d'heure invalide. Utilisez le format HH:MM.")
-        
+    
+    # Calculer le prix du trajet et le sauvgarder dans un variable pour l'afficher
     resultat = calculerPrixTrajet(choix, distance, heureDecimale, dateStr)
+    # Affichage de la facture du trajet détailler
     afficherFacture(resultat)
     
     # Ajout du trajet à l'historique
     historique.append(resultat)
     
-    # 
+    # Sauvegarder dans le fichier json chaque fois qu'un trajet est boucllé
     sauvergarderHistorique(historique)
     
 
-
+# Message de fin avant e quitter le programme
 print("\nMerci d'avoir utilisé notre Apk ! À bientôt.")
