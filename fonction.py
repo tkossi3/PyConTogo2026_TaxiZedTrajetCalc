@@ -1,5 +1,6 @@
-from constantes import HEURES_POINTES, TARIFS
-
+from constantes import HEURES_POINTES, TARIFS, FICHIER_HISTORIQUE
+import os
+import json
 
 # 
 def convertirHeureEnDecimal(heureStr):
@@ -26,7 +27,7 @@ def arrondirPrix(montant):
 
 
 # 
-def calculerPrixTrajet(typeDeplacement, distance, heureDecimale):
+def calculerPrixTrajet(typeDeplacement, distance, heureDecimale, dateStr):
     info = TARIFS[typeDeplacement]
     
     prixBrut = info["base"] + (info["prix_km"] * distance)
@@ -44,6 +45,7 @@ def calculerPrixTrajet(typeDeplacement, distance, heureDecimale):
     return {
         "moyen": info["nom"],
         "distance": distance,
+        "dateStr" : dateStr,
         "heureDecimale": heureDecimale,
         "estPointe": heurePointe,
         "prixBrute": prixBrut,
@@ -60,15 +62,50 @@ def afficherFacture(resultat):
     
     statutPointe = "OUI (20%)" if resultat['moyen'] == "Taxi" else "OUI (15%)" if resultat["estPointe"] else "NON (00%)"
     
-    print("\n" + "<"*19 + ">"*19)
-    print("|         FACTURE DU TRAJET          |")
-    print("<"*19 + ">"*19)
-    print(f"| Moyen de transport :   {resultat['moyen']}    |")
-    print(f"| Distance           :   {resultat['distance']} km      |")
-    print(f"| Heure départ       :   {heureFomatee}       |")
-    print(f"| Heure pointe       :   {statutPointe}   |")
-    print(f"| Prix exact         :   {resultat['prixTotal']:.2f} FCFA |")
-    print("-" * 38)
-    print(f"| Prix à payer       :   {int(resultat['prixArrondi'])} FCFA    |")
-    print("<"*19 + ">"*19)
+    print("\n" + "<"*20 + ">"*20)
+    print("|         FACTURE DU TRAJET            |")
+    print("<"*20 + ">"*20)
+    print(f"| Moyen de transport :  {resultat['moyen']}|")
+    print(f"| Distance           :  {resultat['distance']} km         |")
+    print(f"| Date du trajet     :  {resultat['dateStr']}     |")
+    print(f"| Heure départ       :  {heureFomatee}          |")
+    print(f"| Heure pointe       :  {statutPointe}      |")
+    print(f"| Prix exact         :  {resultat['prixTotal']:.2f} FCFA    |")
+    print("-" * 40)
+    print(f"| Prix à payer       :  {int(resultat['prixArrondi'])} FCFA       |")
+    print("<"*20 + ">"*20)
 
+def chargerHistorique(nomFichier = FICHIER_HISTORIQUE):
+    if not os.path.exists(nomFichier):
+        return []
+
+    try:
+        with open(nomFichier, "r", encoding="utf-8") as fush:
+            return json.load(fush)
+    except (json.JSONDecodeError, IOError) as e:
+        print(f"Impossible de lire l'historique ({e}).")
+        return []
+
+
+def sauvergarderHistorique(historique, nomFichier = FICHIER_HISTORIQUE):
+    try:
+        with open(nomFichier, "w", encoding="utf-8") as fush:
+            json.dump(historique, fush, ensure_ascii=False, indent=4)
+    except IOError as e:
+        print(f"Echec de la sauvegarde dans le fichoer json : {e}")
+        
+
+def afficherHistorique(historique):
+    if not historique:
+        return
+    
+    print("\n" + "#"*80)
+    print(f"|               HISTORIQUES DES TRAJETS ({len(historique)} enregistrement(s))                  |")
+    print("#"*80)
+    for idx, t in enumerate(historique, 1):
+        heureEntiere = int(t["heureDecimale"])
+        minuteEntiere = int(round((t["heureDecimale"] - heureEntiere) * 60))
+        heureStr = f"{heureEntiere:02d}h{minuteEntiere:02d}"
+        
+        print(f"| {idx:02d}. [{t['dateStr']}] - {t['moyen']} | {t['distance']} km | Heure: {heureStr} | Total: {int(t['prixArrondi'])} FCFA |")
+    print("#"*80 + "\n")
