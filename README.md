@@ -33,4 +33,14 @@
  ```python main.py```
 
 
-
+## Exemple d'execution
+<div>
+    <h3>Enregistrement d'un trajet avec zemidjan - Saisie de la date et heure</h3>
+    <img src="Images/zemidjan.png">
+    <h3>Enregistrement d'un trajet avec taxi - Saisie de la date et heure</h3>
+    <img src="Images/taxi.png">
+    <h3>Enregistrement d'un trajet avec zemidjan - Optention automatique de la date et heure du système</h3>
+    <img src="Images/zemidjan2.png">
+    <h3>Enttré dans le programme, affichage de l'historique, sortie du programme</h3>
+    <img src="Images/historique.png">
+</div>

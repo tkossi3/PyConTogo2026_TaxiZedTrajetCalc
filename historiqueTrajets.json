@@ -1,0 +1,52 @@
+[
+    {
+        "moyen": "Zemidjan (Moto)",
+        "distance": 7.6,
+        "dateStr": "10/08/2026",
+        "heureDecimale": 7.75,
+        "estPointe": true,
+        "prixBrute": 720.0,
+        "prixTotal": 827.9999999999999,
+        "prixArrondi": 825
+    },
+    {
+        "moyen": "Taxis (Voiture)",
+        "distance": 5.2,
+        "dateStr": "12/08/2026",
+        "heureDecimale": 8.166666666666666,
+        "estPointe": true,
+        "prixBrute": 720.0,
+        "prixTotal": 900.0,
+        "prixArrondi": 900
+    },
+    {
+        "moyen": "Zemidjan (Moto)",
+        "distance": 6.4,
+        "dateStr": "15/08/2026",
+        "heureDecimale": 18.166666666666668,
+        "estPointe": true,
+        "prixBrute": 630.0,
+        "prixTotal": 724.5,
+        "prixArrondi": 725
+    },
+    {
+        "moyen": "Taxis (Voiture)",
+        "distance": 3.6,
+        "dateStr": "18/08/2026",
+        "heureDecimale": 7.75,
+        "estPointe": true,
+        "prixBrute": 560.0,
+        "prixTotal": 700.0,
+        "prixArrondi": 700
+    },
+    {
+        "moyen": "Zemidjan (Moto)",
+        "distance": 8.2,
+        "dateStr": "19/08/2026",
+        "heureDecimale": 0.08333333333333333,
+        "estPointe": false,
+        "prixBrute": 765.0,
+        "prixTotal": 765.0,
+        "prixArrondi": 775
+    }
+]
